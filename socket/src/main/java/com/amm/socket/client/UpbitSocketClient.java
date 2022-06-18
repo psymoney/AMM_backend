@@ -1,11 +1,14 @@
 package com.amm.socket.client;
 
+import com.amm.socket.handler.OrderbookResponseHandler;
+import com.amm.socket.handler.TickerResponseHandler;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
 import net.minidev.json.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
@@ -26,6 +29,9 @@ public class UpbitSocketClient extends TextWebSocketHandler {
     private final Logger logger = LoggerFactory.getLogger(UpbitSocketClient.class);
     private final JSONParser jsonParser = new JSONParser(JSONParser.DEFAULT_PERMISSIVE_MODE);
     private WebSocketSession upBitAPISession;
+
+    @Autowired TickerResponseHandler tickerResponseHandler;
+    @Autowired OrderbookResponseHandler orderbookResponseHandler;
 
     public UpbitSocketClient() throws URISyntaxException {
         socketUri = new URI("wss://api.upbit.com/websocket/v1");
@@ -99,10 +105,11 @@ public class UpbitSocketClient extends TextWebSocketHandler {
         switch (type) {
             case "ticker":
                 logger.info("ticker case");
+                tickerResponseHandler.handleResponse(jsonMessage);
                 break;
 
             case "orderbook":
-                logger.info("orderbook case");
+//                logger.info("orderbook case");
                 break;
 
 
@@ -116,9 +123,11 @@ public class UpbitSocketClient extends TextWebSocketHandler {
 
     public JSONObject convertToJsonObject(BinaryMessage message) {
         String msg = StandardCharsets.UTF_8.decode(message.getPayload()).toString();
+        Object object = null;
         JSONObject jsonObject = null;
         try {
-            jsonObject = (JSONObject) jsonParser.parse(msg);
+            object = jsonParser.parse(msg);
+            jsonObject = (JSONObject) object;
         } catch (ParseException e) {
             logger.error("parsing binay message failed");
             logger.error(e.getMessage());
@@ -126,7 +135,7 @@ public class UpbitSocketClient extends TextWebSocketHandler {
         return jsonObject;
     }
 
-    public void handleResponse() {
+    public void handleTickerResponse(JSONObject jsonMessage) {
 
     }
 }
