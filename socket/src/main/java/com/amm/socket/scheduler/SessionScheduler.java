@@ -1,6 +1,6 @@
 package com.amm.socket.scheduler;
 
-import com.amm.socket.client.UpbitAPIClient;
+import com.amm.socket.client.UpbitSocketClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +14,14 @@ public class SessionScheduler {
 
     private final Logger logger = LoggerFactory.getLogger(SessionScheduler.class);
     @Autowired
-    UpbitAPIClient upbitAPIClient;
+    UpbitSocketClient upbitAPIClient;
 
-    @Scheduled(cron="0 * * * * *")
-    public void executeEveryMinute() {
-        logger.info("run scheduler");
+    @Scheduled(fixedRate = 1000)
+    public void executeEverySecond() {
         try {
-           upbitAPIClient.Connect();
+           upbitAPIClient.validateConnection();
         } catch (ExecutionException | InterruptedException e) {
-            logger.error(String.valueOf(e.getStackTrace()));
+            logger.error(e.getMessage());
         }
     }
 }
