@@ -13,8 +13,12 @@ import java.util.concurrent.ExecutionException;
 public class SessionScheduler {
 
     private final Logger logger = LoggerFactory.getLogger(SessionScheduler.class);
-    @Autowired
     UpbitSocketClient upbitAPIClient;
+
+    @Autowired
+    public SessionScheduler(UpbitSocketClient upbitSocketClient) {
+        this.upbitAPIClient = upbitSocketClient;
+    }
 
     @Scheduled(fixedRate = 1000)
     public void executeEverySecond() {
