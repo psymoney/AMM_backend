@@ -1,9 +1,11 @@
 package com.amm.socket.handler;
 
+import com.amm.socket.service.CandleService;
 import com.amm.socket.vo.DayCandlePriceVO;
 import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
@@ -13,7 +15,14 @@ public class TickerResponseHandler {
 
     private final Logger logger = LoggerFactory.getLogger(TickerResponseHandler.class);
 
+    @Autowired CandleService candleService;
+
     public void handleResponse(JSONObject jsonMessage) {
+        DayCandlePriceVO dayCandlePriceVO = convertToVO(jsonMessage);
+        candleService.upsertDayCandlePrice(dayCandlePriceVO);
+    }
+
+    private DayCandlePriceVO convertToVO(JSONObject jsonMessage) {
         DayCandlePriceVO dayCandlePriceVO = new DayCandlePriceVO();
         dayCandlePriceVO.setCode(jsonMessage.get("code").toString());
         dayCandlePriceVO.setOpeningPrice((double) jsonMessage.get("opening_price"));
@@ -25,8 +34,6 @@ public class TickerResponseHandler {
                 + "-" + date.substring(6,8)));
         dayCandlePriceVO.setTradeTime(jsonMessage.get("trade_time").toString());
 
-        logger.info(jsonMessage.toString());
-        logger.info(dayCandlePriceVO.getCode());
-        logger.info(dayCandlePriceVO.getTradeTime());
+        return dayCandlePriceVO;
     }
 }
