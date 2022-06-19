@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
 @EnableScheduling
 @SpringBootApplication
 public class SocketApplication {
