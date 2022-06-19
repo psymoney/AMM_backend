@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTDMapper3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.amm.socket.mapper.DayCandlePriceMapper">
+
+    <insert id="upsertCandlePrice" parameterType="DayCandlePriceVO">
+        INSERT INTO AMM.DayCandlePrice(code, trade_date, opening_price, high_price, low_price, trade_price, trade_time)
+        VALUES(#{code}, #{tradeDate}, #{openingPrice}, #{highPrice}, #{lowPrice}, #{tradePrice}, #{tradeTime})
+        ON DUPLICATE KEY UPDATE opening_price = #{openingPrice}, high_price = #{highPrice}, low_price = #{lowPrice}, trade_price = #{tradePrice},
+            trade_time = #{tradeTime}
+    </insert>
+</mapper>
