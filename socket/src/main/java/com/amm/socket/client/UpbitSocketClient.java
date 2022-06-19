@@ -98,7 +98,6 @@ public class UpbitSocketClient extends TextWebSocketHandler {
 
     @Override
     protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) {
-//        logger.info("msg = " + msg);
         JSONObject jsonMessage = convertToJsonObject(message);
 
         if (jsonMessage == null) {
@@ -122,7 +121,6 @@ public class UpbitSocketClient extends TextWebSocketHandler {
                 return;
         }
 
-//        logger.info(jsonMessage.get("type").toString());
 
     }
 
