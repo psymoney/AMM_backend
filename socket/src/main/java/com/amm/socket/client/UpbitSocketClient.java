@@ -30,10 +30,14 @@ public class UpbitSocketClient extends TextWebSocketHandler {
     private final JSONParser jsonParser = new JSONParser(JSONParser.DEFAULT_PERMISSIVE_MODE);
     private WebSocketSession upBitAPISession;
 
-    @Autowired TickerResponseHandler tickerResponseHandler;
-    @Autowired OrderbookResponseHandler orderbookResponseHandler;
+    private TickerResponseHandler tickerResponseHandler;
+    private OrderbookResponseHandler orderbookResponseHandler;
 
-    public UpbitSocketClient() throws URISyntaxException {
+    @Autowired
+    public UpbitSocketClient(TickerResponseHandler tickerResponseHandler,
+                             OrderbookResponseHandler orderbookResponseHandler) throws URISyntaxException {
+        this.tickerResponseHandler = tickerResponseHandler;
+        this.orderbookResponseHandler = orderbookResponseHandler;
         socketUri = new URI("wss://api.upbit.com/websocket/v1");
         setRequestMessage();
         setUpBitAPISession();
@@ -91,9 +95,9 @@ public class UpbitSocketClient extends TextWebSocketHandler {
         }
     }
 
+
     @Override
     protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) {
-//        logger.info("msg = " + msg);
         JSONObject jsonMessage = convertToJsonObject(message);
 
         if (jsonMessage == null) {
@@ -104,12 +108,11 @@ public class UpbitSocketClient extends TextWebSocketHandler {
 
         switch (type) {
             case "ticker":
-                logger.info("ticker case");
                 tickerResponseHandler.handleResponse(jsonMessage);
                 break;
 
             case "orderbook":
-//                logger.info("orderbook case");
+                orderbookResponseHandler.handleResponse(jsonMessage);
                 break;
 
 
@@ -117,7 +120,6 @@ public class UpbitSocketClient extends TextWebSocketHandler {
                 return;
         }
 
-//        logger.info(jsonMessage.get("type").toString());
 
     }
 
