@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Mapper
 @Repository
-public interface DayCandlePrice {
+public interface DayCandlePriceMapper {
     void upsertCandlePrice(DayCandlePriceVO dayCandlePriceVO);
 }

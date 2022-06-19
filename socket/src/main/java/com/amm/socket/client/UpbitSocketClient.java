@@ -30,8 +30,8 @@ public class UpbitSocketClient extends TextWebSocketHandler {
     private final JSONParser jsonParser = new JSONParser(JSONParser.DEFAULT_PERMISSIVE_MODE);
     private WebSocketSession upBitAPISession;
 
-    TickerResponseHandler tickerResponseHandler;
-    OrderbookResponseHandler orderbookResponseHandler;
+    private TickerResponseHandler tickerResponseHandler;
+    private OrderbookResponseHandler orderbookResponseHandler;
 
     @Autowired
     public UpbitSocketClient(TickerResponseHandler tickerResponseHandler,
@@ -108,12 +108,11 @@ public class UpbitSocketClient extends TextWebSocketHandler {
 
         switch (type) {
             case "ticker":
-                logger.info("ticker case");
                 tickerResponseHandler.handleResponse(jsonMessage);
                 break;
 
             case "orderbook":
-//                logger.info("orderbook case");
+                orderbookResponseHandler.handleResponse(jsonMessage);
                 break;
 
 

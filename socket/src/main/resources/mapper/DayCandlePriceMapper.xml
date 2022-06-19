@@ -3,7 +3,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTDMapper3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.amm.socket.mapper.DayCandlePrice">
+<mapper namespace="com.amm.socket.mapper.DayCandlePriceMapper">
 
     <insert id="upsertCandlePrice" parameterType="DayCandlePriceVO">
         INSERT INTO AMM.DayCandlePrice(code, trade_date, opening_price, high_price, low_price, trade_price, trade_time)
