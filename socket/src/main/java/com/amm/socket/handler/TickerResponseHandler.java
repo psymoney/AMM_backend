@@ -1,5 +1,6 @@
 package com.amm.socket.handler;
 
+import com.amm.socket.vo.DayCandlePriceVO;
 import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,21 +14,19 @@ public class TickerResponseHandler {
     private final Logger logger = LoggerFactory.getLogger(TickerResponseHandler.class);
 
     public void handleResponse(JSONObject jsonMessage) {
-        String code = jsonMessage.get("code").toString();
-        double openingPrice = (double) jsonMessage.get("opening_price");
-        double highPrice = (double) jsonMessage.get("high_price");
-        double lowPrice = (double) jsonMessage.get("low_price");
-        double tradePrice = (double) jsonMessage.get("trade_price");
+        DayCandlePriceVO dayCandlePriceVO = new DayCandlePriceVO();
+        dayCandlePriceVO.setCode(jsonMessage.get("code").toString());
+        dayCandlePriceVO.setOpeningPrice((double) jsonMessage.get("opening_price"));
+        dayCandlePriceVO.setHighPrice((double) jsonMessage.get("high_price"));
+        dayCandlePriceVO.setLowPrice((double) jsonMessage.get("low_price"));
+        dayCandlePriceVO.setTradePrice((double) jsonMessage.get("trade_price"));
         String date = jsonMessage.get("trade_date").toString();
-        Date tradeDate = Date.valueOf(date.substring(0,4) + "-" + date.substring(4,6) + "-" + date.substring(6,8));
-        String tradeTime = jsonMessage.get("trade_time").toString();
-
-
-
+        dayCandlePriceVO.setTradeDate(Date.valueOf(date.substring(0,4) + "-" + date.substring(4,6)
+                + "-" + date.substring(6,8)));
+        dayCandlePriceVO.setTradeTime(jsonMessage.get("trade_time").toString());
 
         logger.info(jsonMessage.toString());
-        logger.info(code + openingPrice + highPrice + lowPrice + tradePrice + tradeDate + tradeTime);
-
-        logger.info(tradeDate.toString());
+        logger.info(dayCandlePriceVO.getCode());
+        logger.info(dayCandlePriceVO.getTradeTime());
     }
 }
