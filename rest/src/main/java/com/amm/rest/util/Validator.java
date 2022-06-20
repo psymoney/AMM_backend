@@ -16,7 +16,7 @@ public class Validator {
 
     public boolean isPeriodValid(String start, String end) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        if (!format.parse(start).before(format.parse(end))) {
+        if (format.parse(start).after(format.parse(end))) {
             return false;
         }
 

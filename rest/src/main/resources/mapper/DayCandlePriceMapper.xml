@@ -13,6 +13,7 @@
     <select id="getCandlePricesDuringPeriod" parameterType="HashMap" resultType="com.amm.rest.vo.DayCandlePriceVO">
         SELECT *
         FROM AMM.DayCandlePrice
-        WHERE trade_date BETWEEN CAST(#{start} AS date) AND CAST(#{end} AS date);
+        WHERE  <![CDATA[ trade_date >= CAST(#{start} AS date) ]]>
+          AND <![CDATA[ trade_date <= CAST(#{end} AS date) ]]>;
     </select>
 </mapper>
