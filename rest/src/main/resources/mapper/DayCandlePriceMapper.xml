@@ -4,13 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.amm.rest.mapper.DayCandlePriceMapper">
-    <select id="getCandlePrice" parameterType="String" resultType="DayCandlePriceVO">
+    <select id="getCandlePrice" parameterType="String" resultType="com.amm.rest.vo.DayCandlePriceVO">
         SELECT *
         FROM AMM.DayCandlePrice dcp
         WHERE trade_date = CAST(#{date} AS date);
     </select>
 
-    <select id="getCandlePricesDuringPeriod" parameterType="HashMap" resultType="DayCandlePriceVO">
+    <select id="getCandlePricesDuringPeriod" parameterType="HashMap" resultType="com.amm.rest.vo.DayCandlePriceVO">
         SELECT *
         FROM AMM.DayCandlePrice
         WHERE trade_date BETWEEN CAST(#{start} AS date) AND CAST(#{end} AS date);

@@ -5,17 +5,21 @@ import com.amm.rest.service.DayCandlePriceService;
 import com.amm.rest.util.Validator;
 import com.amm.rest.vo.DayCandlePriceVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.Map;
 
-@Component
+@Service
 public class DayCandlePriceServiceImpl implements DayCandlePriceService {
-    @Autowired
-    DayCandlePriceMapper dayCandlePriceMapper;
+    private DayCandlePriceMapper dayCandlePriceMapper;
     @Autowired
     Validator validator;
 
+    @Autowired
+    public DayCandlePriceServiceImpl(DayCandlePriceMapper dayCandlePriceMapper) {
+        this.dayCandlePriceMapper = dayCandlePriceMapper;
+    }
     @Override
     public DayCandlePriceVO getCandlePrice(Map<String, String> param) {
         if (!validator.isDateValid(param.get("date"))) {
@@ -25,7 +29,7 @@ public class DayCandlePriceServiceImpl implements DayCandlePriceService {
     }
 
     @Override
-    public DayCandlePriceVO[] getCandlePricesDuringPeriod(Map<String, String> params) {
+    public DayCandlePriceVO[] getCandlePricesDuringPeriod(Map<String, String> params) throws ParseException {
         if (!validator.isPeriodValid(params.get("start"), params.get("end"))) {
             return null;
         }
